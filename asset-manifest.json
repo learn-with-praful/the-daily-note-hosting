@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.js": "/static/js/main.50797608.js",
-    "static/js/787.baa9e631.chunk.js": "/static/js/787.baa9e631.chunk.js",
-    "static/media/login.svg": "/static/media/login.b756cf0703cbc172a2872c3dc075b357.svg",
-    "index.html": "/index.html",
-    "static/media/GoogleIcon.svg": "/static/media/GoogleIcon.17675d09a4cae94c6a9a17e1b164b180.svg",
-    "main.50797608.js.map": "/static/js/main.50797608.js.map",
-    "787.baa9e631.chunk.js.map": "/static/js/787.baa9e631.chunk.js.map"
+    "main.js": "/the-daily-note-hosting/static/js/main.b5a9eef3.js",
+    "static/js/787.baa9e631.chunk.js": "/the-daily-note-hosting/static/js/787.baa9e631.chunk.js",
+    "static/media/login.svg": "/the-daily-note-hosting/static/media/login.b756cf0703cbc172a2872c3dc075b357.svg",
+    "index.html": "/the-daily-note-hosting/index.html",
+    "static/media/GoogleIcon.svg": "/the-daily-note-hosting/static/media/GoogleIcon.17675d09a4cae94c6a9a17e1b164b180.svg",
+    "main.b5a9eef3.js.map": "/the-daily-note-hosting/static/js/main.b5a9eef3.js.map",
+    "787.baa9e631.chunk.js.map": "/the-daily-note-hosting/static/js/787.baa9e631.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.50797608.js"
+    "static/js/main.b5a9eef3.js"
   ]
 }
