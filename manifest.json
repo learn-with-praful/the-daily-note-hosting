@@ -16,10 +16,10 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/",
+  "start_url": "https://learn-with-praful.github.io/",
   "display": "standalone",
   "theme_color": "#DE496E",
   "orientation": "portrait",
   "background_color": "#ffffff",
-  "scope": "/"
+  "scope": "."
 }
