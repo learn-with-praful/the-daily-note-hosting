@@ -1,15 +1,14 @@
-import { makeStyles } from "@mui/styles";
-import theme from "theme";
+import moment from "moment";
 
-export const setUserInfoToLocal = (authInstance) => {
+export const setUserInfoToLocal = (authInstance = {}) => {
   console.log("authInstance", authInstance);
   window.authInstance = authInstance;
-  const basicProfile = authInstance.getBasicProfile();
-  const authResponse = authInstance.getAuthResponse(true);
-  authInstance.tokenId = authResponse.id_token;
-  authInstance.googleId = basicProfile.getId();
+  const basicProfile = authInstance?.getBasicProfile();
+  const authResponse = authInstance?.getAuthResponse(true);
+  authInstance.tokenId = authResponse?.id_token;
+  authInstance.googleId = basicProfile?.getId();
   authInstance.tokenObj = authResponse;
-  authInstance.accessToken = authResponse.access_token;
+  authInstance.accessToken = authResponse?.access_token;
   authInstance.profileObj = {
     googleId: basicProfile.getId(),
     imageUrl: basicProfile.getImageUrl(),
@@ -18,7 +17,6 @@ export const setUserInfoToLocal = (authInstance) => {
     givenName: basicProfile.getGivenName(),
     familyName: basicProfile.getFamilyName(),
   };
-  console.log("authInstance", authInstance);
   window.localStorage.setItem("user", JSON.stringify(authInstance));
   return authInstance;
 };
@@ -29,6 +27,19 @@ export const getUserInfoFromLocalStorage = () => {
   return userInfo;
 };
 
-export const generateStyle = (styleObj, styleParams = {}) => {
-  return makeStyles(() => styleObj(theme))(styleParams);
+export const pastDateGenerator = (days) => {
+  let dates = [];
+  for (let i = days; i > 0; i--) {
+    let date = moment();
+    date.subtract(i - 2, "day").format("DD-MM-YYYY");
+    dates.push(date);
+  }
+
+  // TODO: remove this
+  console.log("dates", dates);
+  window.praful = dates;
+
+  return dates;
 };
+
+// pastDateGenerator(5);

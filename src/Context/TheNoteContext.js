@@ -5,19 +5,38 @@ import React, {
   useCallback,
   useMemo,
 } from "react";
-import { getUserInfoFromLocalStorage } from "Utils/Utils";
+import { generateTheme } from "theme";
 
 export let RootContext = createContext();
 export default function TheNoteContext({ children }) {
-  // let userInfo = getUserInfoFromLocalStorage();
-
-  const [state, setState] = useState({});
+  const [state, setState] = useState({
+    appInitialized: false,
+    sheetInitialized: false,
+    darkMode: JSON.parse(window.localStorage.getItem("darkMode")),
+    theme: generateTheme(
+      JSON.parse(window.localStorage.getItem("darkMode")) && "dark"
+    ),
+  });
 
   const setUserDetail = (data) => {
     console.log("data1", data);
     setState({
       ...state,
       userDetail: data,
+    });
+  };
+
+  const updateState = (data) => {
+    if (typeof data === "function")
+      return setState((state) => ({
+        ...state,
+        ...data(state),
+      }));
+    if (typeof data !== "object") return false;
+
+    setState({
+      ...state,
+      ...data,
     });
   };
 
@@ -28,12 +47,35 @@ export default function TheNoteContext({ children }) {
     };
   }, [state, setUserDetail]);
 
-  console.log("state", state);
+  console.log("Context", state);
 
-  console.log("generateProps", generateProps);
+  const toggleDarkMode = () => {
+    let newMode = state.darkMode ? "light" : "dark";
+
+    updateState({
+      darkMode: !state.darkMode,
+      theme: generateTheme(newMode),
+    });
+  };
+
+  const resetState = () =>
+    setState({
+      theme: state.theme,
+      darkMode: state.darkMode,
+      appInitialized: true,
+    });
 
   return (
-    <RootContext.Provider value={{ ...state, setUserDetail: setUserDetail }}>
+    <RootContext.Provider
+      value={{
+        ...state,
+        setUserDetail: setUserDetail,
+        setState: setState,
+        updateState: updateState,
+        resetState: resetState,
+        toggleDarkMode: toggleDarkMode,
+      }}
+    >
       <div>{children}</div>
     </RootContext.Provider>
   );

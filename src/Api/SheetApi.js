@@ -49,38 +49,37 @@ export let getSpreadSheet = () => {
   // https://content-sheets.googleapis.com/v4/spreadsheets/13kAbKDibk4ElrIXIBQnDjD8Kow8pzlVdPmS5DBxNIuQ/values/a1?key=AIzaSyAa8yy0GdcGPHdtD083HiGGx_S0vMPScDM
 };
 
-export const createSheet = async () => {
-  let folderId = await getDriveFolderId("TheNote");
-  console.log("folderId", folderId);
-  // return false;
+export const createSheet = (fileName, parentId) => {
+  return new Promise((resolve, reject) => {
+    window.gapi.client.drive.files
+      .list({
+        // q: "mimeType=application/vnd.google-apps.spreadsheet' and name='TheNoteDB'",
+        q: `mimeType='application/vnd.google-apps.spreadsheet' and name='${fileName}'`,
+        trashed: false,
+        parent: parentId,
+      })
+      .then((res) => {
+        console.log("Create Sheet Result", res);
 
-  window.gapi.client.drive.files
-    .list({
-      // q: "mimeType=application/vnd.google-apps.spreadsheet' and name='TheNoteDB'",
-      q: "mimeType='application/vnd.google-apps.spreadsheet' and name='TheNoteDB'",
-      trashed: false,
-      parent: folderId,
-    })
-    .then((res) => {
-      console.log("Res", res);
-      console.log("Res", res.result.files.length);
-      console.log("Res", Boolean(res.result.files.length));
-
-      if (res.result.files.length > 0) {
-      } else {
-        createSpreadSheet({
-          name: "TheNoteDB",
-          parent: folderId,
-        })
-          .then((res) => {
-            let spreadSheetId = res.id;
-            console.log("sheet create res", res);
+        if (res.result.files.length > 0) {
+          console.log("File Already Available");
+          resolve(res.result.files);
+        } else {
+          createSpreadSheet({
+            name: "TheNoteDB",
+            parent: parentId,
           })
-          .catch((error) => {
-            console.log("error1", error);
-          });
-      }
-    });
+            .then((res) => {
+              let spreadSheetId = res.id;
+              console.log("sheet create res", res);
+              console.log("give Response");
+            })
+            .catch((error) => {
+              console.log("error1", error);
+            });
+        }
+      });
+  });
 };
 
 export const createSpreadSheet = ({ name, parent, fields = "id" }) => {

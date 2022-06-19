@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import { Button } from "Component/Common";
 import { ReactComponent as LoginIcon } from "assets/login.svg";
 import { ReactComponent as GoogleIcon } from "assets/GoogleIcon.svg";
-import { generateStyle } from "Utils/Utils";
+import { setUserInfoToLocal } from "Utils/Utils";
+import { useNavigate } from "react-router-dom";
+import { useStyleGenerator } from "theme";
 
 const styles = (theme) => ({
   dmLoginRoot: {
@@ -41,15 +43,29 @@ const styles = (theme) => ({
 });
 
 export default function Login() {
-  const loginWithGoogle = () => {};
-  const classes = generateStyle(styles);
+  const classes = useStyleGenerator(styles);
 
-  const singOut = () => {
-    var auth2 = window.gapi.auth2.getAuthInstance();
-    console.log("auth2", auth2);
-    auth2.signOut().then(function () {
-      console.log("User signed out.");
-    });
+  const navigate = useNavigate();
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+
+  const loginWithGoogle = () => {
+    setIsLoginLoading(true);
+
+    let GoogleAuth = window.gapi.auth2.getAuthInstance();
+
+    GoogleAuth.signIn()
+      .then((res) => {
+        let data = setUserInfoToLocal(res);
+        setIsLoginLoading(false);
+        navigate("/home");
+      })
+      .catch((error) => {
+        console.log("Error", error);
+        if (error.error === "popup_closed_by_user") {
+          console.log("Popup close.");
+        }
+        setIsLoginLoading(false);
+      });
   };
 
   return (
@@ -67,6 +83,7 @@ export default function Login() {
           startIcon={<GoogleIcon width="20" height="20" />}
           variant="outlined"
           size="large"
+          disabled={isLoginLoading}
         >
           Login With Google
         </Button>

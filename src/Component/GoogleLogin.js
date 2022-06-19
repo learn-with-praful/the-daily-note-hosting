@@ -4,7 +4,6 @@ import { setUserInfoToLocal } from "Utils/Utils";
 export default function GoogleLogin() {
   const handleGoogleLogin = () => {
     window?.gapi?.load("client", (data) => {
-      console.log("data", data);
       window.gapi?.client
         .init({
           apiKey: "AIzaSyBz9UU61F-hDZ3IUOPNWia7m7MsHz_YCSM",
