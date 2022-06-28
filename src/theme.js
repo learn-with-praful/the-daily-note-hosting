@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { createTheme } from "@mui/material";
 import { RootContext } from "Context/TheNoteContext";
 import { makeStyles } from "@mui/styles";

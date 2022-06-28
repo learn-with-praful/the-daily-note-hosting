@@ -34,8 +34,8 @@ export const initializeBaseConnection = () => {
           let authInstance = gapi?.auth2?.getAuthInstance();
 
           if (authInstance?.isSignedIn?.get()) {
-            let tb = authInstance.currentUser.tb;
-            let temp = setUserInfoToLocal(tb);
+            let data = authInstance.currentUser.get();
+            let temp = setUserInfoToLocal(data);
             res(temp);
           } else {
             rej({ error: "user_not_login", message: "User not login." });

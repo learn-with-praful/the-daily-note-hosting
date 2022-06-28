@@ -35,7 +35,6 @@ export default function InitializationLoader() {
         updateState({
           appInitialized: true,
         });
-        console.log("errors", error);
         if (
           (error.error = "user_not_login" && window.location.hash !== "#/login")
         ) {

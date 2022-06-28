@@ -1,10 +1,4 @@
-import React, {
-  Children,
-  createContext,
-  useState,
-  useCallback,
-  useMemo,
-} from "react";
+import React, { createContext, useState, useMemo } from "react";
 import { generateTheme } from "theme";
 
 export let RootContext = createContext();

@@ -5,7 +5,7 @@ export const setUserInfoToLocal = (authInstance = {}) => {
   window.authInstance = authInstance;
   const basicProfile = authInstance?.getBasicProfile();
   const authResponse = authInstance?.getAuthResponse(true);
-  authInstance.tokenId = authResponse?.id_token;
+  authInstance.tokenId = authResponse?.tokenId;
   authInstance.googleId = basicProfile?.getId();
   authInstance.tokenObj = authResponse;
   authInstance.accessToken = authResponse?.access_token;
