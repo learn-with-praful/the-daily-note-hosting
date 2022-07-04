@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.js": "/the-daily-note-hosting/static/js/main.9214b7a8.js",
+    "main.js": "/the-daily-note-hosting/static/js/main.c5d4c4ea.js",
     "static/js/787.baa9e631.chunk.js": "/the-daily-note-hosting/static/js/787.baa9e631.chunk.js",
     "service-worker.js": "/the-daily-note-hosting/service-worker.js",
     "static/media/login.svg": "/the-daily-note-hosting/static/media/login.b756cf0703cbc172a2872c3dc075b357.svg",
@@ -12,10 +12,10 @@
     "static/media/SearchIcon.svg": "/the-daily-note-hosting/static/media/SearchIcon.ca08db940f22cd706a9299fb3baf2ffe.svg",
     "static/media/BackIcon.svg": "/the-daily-note-hosting/static/media/BackIcon.ecdccc54cdff6333ce9fceeb8055196d.svg",
     "static/media/PlusIcon.svg": "/the-daily-note-hosting/static/media/PlusIcon.e991d101ca071b8ae2db9e04b06fbfb1.svg",
-    "main.9214b7a8.js.map": "/the-daily-note-hosting/static/js/main.9214b7a8.js.map",
+    "main.c5d4c4ea.js.map": "/the-daily-note-hosting/static/js/main.c5d4c4ea.js.map",
     "787.baa9e631.chunk.js.map": "/the-daily-note-hosting/static/js/787.baa9e631.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.9214b7a8.js"
+    "static/js/main.c5d4c4ea.js"
   ]
 }
