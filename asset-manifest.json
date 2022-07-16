@@ -1,21 +1,25 @@
 {
   "files": {
-    "main.js": "/the-daily-note-hosting/static/js/main.c5d4c4ea.js",
+    "main.css": "/the-daily-note-hosting/static/css/main.c7ec3132.css",
+    "main.js": "/the-daily-note-hosting/static/js/main.520cb0f1.js",
     "static/js/787.baa9e631.chunk.js": "/the-daily-note-hosting/static/js/787.baa9e631.chunk.js",
     "service-worker.js": "/the-daily-note-hosting/service-worker.js",
     "static/media/login.svg": "/the-daily-note-hosting/static/media/login.b756cf0703cbc172a2872c3dc075b357.svg",
     "static/media/LogoutIcon.svg": "/the-daily-note-hosting/static/media/LogoutIcon.319f237c845a500b8fe127a7ce921223.svg",
     "index.html": "/the-daily-note-hosting/index.html",
     "static/media/SaveIcon.svg": "/the-daily-note-hosting/static/media/SaveIcon.0af8be87d1345a04abde98192006d273.svg",
+    "static/media/CrossIcon.svg": "/the-daily-note-hosting/static/media/CrossIcon.ca9f91d1f53d3ae73b3e127434230eb8.svg",
     "static/media/GoogleIcon.svg": "/the-daily-note-hosting/static/media/GoogleIcon.17675d09a4cae94c6a9a17e1b164b180.svg",
     "static/media/DarkModeIcon.svg": "/the-daily-note-hosting/static/media/DarkModeIcon.8b8f1c8876b6e26c33700b4985ee8aa5.svg",
     "static/media/SearchIcon.svg": "/the-daily-note-hosting/static/media/SearchIcon.ca08db940f22cd706a9299fb3baf2ffe.svg",
     "static/media/BackIcon.svg": "/the-daily-note-hosting/static/media/BackIcon.ecdccc54cdff6333ce9fceeb8055196d.svg",
     "static/media/PlusIcon.svg": "/the-daily-note-hosting/static/media/PlusIcon.e991d101ca071b8ae2db9e04b06fbfb1.svg",
-    "main.c5d4c4ea.js.map": "/the-daily-note-hosting/static/js/main.c5d4c4ea.js.map",
+    "main.c7ec3132.css.map": "/the-daily-note-hosting/static/css/main.c7ec3132.css.map",
+    "main.520cb0f1.js.map": "/the-daily-note-hosting/static/js/main.520cb0f1.js.map",
     "787.baa9e631.chunk.js.map": "/the-daily-note-hosting/static/js/787.baa9e631.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.c5d4c4ea.js"
+    "static/css/main.c7ec3132.css",
+    "static/js/main.520cb0f1.js"
   ]
 }
