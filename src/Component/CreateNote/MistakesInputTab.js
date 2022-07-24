@@ -14,7 +14,7 @@ const styles = (theme) => ({
   },
 });
 
-export default function MistakesInputTab() {
+export default function MistakesInputTab({ handleChange }) {
   const classes = useStyleGenerator(styles);
 
   return (
@@ -30,7 +30,10 @@ export default function MistakesInputTab() {
           {" Mistakes..."}
         </Typography>
       </Typography>
-      <MultilineInputs placeholders="What's your mistakes of the day." />
+      <MultilineInputs
+        placeholders="What's your mistakes of the day."
+        handleChange={handleChange("mistakes")}
+      />
     </Grid>
   );
 }

@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
+  CircularProgress,
   Container,
   Fab,
   Grid,
   Tab,
   Tabs,
-  TextField,
   Typography,
   Zoom,
 } from "@mui/material";
@@ -15,17 +15,17 @@ import { IconGenerator } from "Component/Common";
 import moment from "moment";
 import LearningInputTab from "Component/CreateNote/LearningInputTab";
 import MistakesInputTab from "Component/CreateNote/MistakesInputTab";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ReactComponent as SaveIcon } from "assets/SaveIcon.svg";
 import { useStyleGenerator } from "theme";
+import StoryTab from "Component/CreateNote/StoryTab";
+import { writeStoryApi } from "Api/SheetApi";
+import { RootContext } from "Context/TheNoteContext";
+import { theNoteTable } from "model/Sheet.model";
+import { useApiCall, useSheetApi } from "Utils/Hooks";
+import { useNotification } from "Component/Common/NotificationManager";
 
 const styles = (theme) => ({
-  dnStoryInput: {
-    marginTop: theme.spacing(2),
-    "& textarea": {
-      height: "calc(100vh - 190px) !important",
-    },
-  },
   dnCreateFabIcon: {
     position: "absolute !important",
     bottom: theme.spacing(3),
@@ -35,15 +35,76 @@ const styles = (theme) => ({
 
 export default function CreateNote() {
   const classes = useStyleGenerator(styles);
+  const { sheetId } = useContext(RootContext);
+  const navigator = useNavigate();
+
+  const { success } = useNotification();
 
   const [tabIndex, setTabIndex] = useState(0);
+  const [state, setState] = useState({});
 
   const handleTabChange = (e, newIndex) => {
     setTabIndex(newIndex);
   };
+  const { addRecordAPI } = useSheetApi({
+    sheetId: sheetId,
+    columns: theNoteTable,
+  });
+  const { data, loading, callApi, progress } = useApiCall(addRecordAPI);
+
+  useEffect(() => {
+    if (progress === "done") {
+      console.log("progress", progress);
+      success("Note Created Successfully.");
+      navigator("/home");
+    }
+  }, [progress]);
+
+  const addMetaInfo = (params) => {
+    let validRows = (data = {}) => {
+      return Object.values(data).filter((value) => value.value).length;
+    };
+
+    return {
+      created_at: moment(new Date()).format("DD/MM/YYYY HH:MM:SS"),
+      story: params.story,
+      learning: JSON.stringify(params?.learning || []),
+      total_learning: validRows(params?.learning),
+      mistakes: JSON.stringify(params?.mistakes || []),
+      total_mistakes: validRows(params?.mistakes),
+      time_stamp: moment(new Date()).format("x"),
+      updated_at: null,
+    };
+  };
 
   const handleCreateNote = () => {
-    console.log("testing");
+    console.log("Create note");
+    let params = {
+      story: state.story,
+      learning: state.learning,
+      mistakes: state.mistakes,
+    };
+    params = addMetaInfo(params);
+    callApi(params);
+    // callApi(sheetId, {
+    //   date: new Date(),
+    //   story: state.story,
+    //   learning: state.learning,
+    //   mistakes: state.mistakes,
+    // });
+    // writeStoryApi(sheetId, {
+    //   date: new Date(),
+    //   story: state.story,
+    //   learning: state.learning,
+    //   mistakes: state.mistakes,
+    // });
+  };
+
+  const handleChange = (key) => (value) => {
+    setState({
+      ...state,
+      [key]: value,
+    });
   };
 
   return (
@@ -66,34 +127,19 @@ export default function CreateNote() {
         </Tabs>
       </Grid>
       {tabIndex === 0 ? (
-        <Grid className={classes.dnStoryInput}>
-          <Typography component="span" variant="h5">
-            Write your
-            <Typography
-              color="primary"
-              component="span"
-              variant="h5"
-              fontWeight="bold"
-            >
-              {" story..."}
-            </Typography>
-          </Typography>
-          <TextField
-            fullWidth
-            noBg
-            placeholder="Write your story..."
-            multiline
-            rows={10}
-          />
-        </Grid>
+        <StoryTab state={state} handleChange={handleChange} />
       ) : tabIndex === 1 ? (
-        <LearningInputTab />
+        <LearningInputTab state={state} handleChange={handleChange} />
       ) : (
-        <MistakesInputTab />
+        <MistakesInputTab state={state} handleChange={handleChange} />
       )}
       <Zoom in={true} className={classes.dnCreateFabIcon} unmountOnExit>
         <Fab color="black" onClick={handleCreateNote}>
-          <IconGenerator icon={SaveIcon} color="primary" />
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <IconGenerator icon={SaveIcon} color="primary" />
+          )}
         </Fab>
       </Zoom>
     </Container>

@@ -35,11 +35,19 @@ export const pastDateGenerator = (days) => {
     dates.push(date);
   }
 
-  // TODO: remove this
-  console.log("dates", dates);
-  window.praful = dates;
-
   return dates;
 };
 
-// pastDateGenerator(5);
+export const dayGreeting = () => {
+  const welcomeTypes = ["Good morning", "Good afternoon", "Good evening"];
+  let greetingMsg = "";
+  const hour = new Date().getHours();
+  if (hour < 12) greetingMsg = welcomeTypes[0];
+  else if (hour < 18) greetingMsg = welcomeTypes[1];
+  else greetingMsg = welcomeTypes[2];
+  return greetingMsg;
+};
+
+export const generateDynamicKey = () => {
+  return Math.random().toString(16).slice(2);
+};

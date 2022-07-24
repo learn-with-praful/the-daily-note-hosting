@@ -5,8 +5,7 @@ import { RootContext } from "Context/TheNoteContext";
 import React, { useContext, useEffect } from "react";
 
 export default function InitializationLoader() {
-  const data = useContext(RootContext) || {};
-  const { updateState, appInitialized } = data;
+  const { updateState, appInitialized } = useContext(RootContext) || {};
 
   useEffect(() => {
     console.log("appInitialized", appInitialized);

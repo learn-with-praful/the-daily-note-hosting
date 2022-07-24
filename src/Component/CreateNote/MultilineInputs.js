@@ -31,7 +31,7 @@ const styles = (theme) => ({
 });
 
 export default function MultilineInputs(props) {
-  const { placeholders = "What you learn today." } = props;
+  const { placeholders = "What you learn today.", handleChange } = props;
   const classes = useStyleGenerator(styles);
 
   const [rows, setRows] = useState({ 0: { value: "" } });
@@ -42,6 +42,7 @@ export default function MultilineInputs(props) {
       if (!prev[index + 1]) {
         prev[index + 1] = { value: "" };
       }
+      handleChange && handleChange(prev);
       return { ...prev };
     });
   };

@@ -2,6 +2,7 @@ import React, { createContext, useState, useMemo } from "react";
 import { generateTheme } from "theme";
 
 export let RootContext = createContext();
+
 export default function TheNoteContext({ children }) {
   const [state, setState] = useState({
     appInitialized: false,
@@ -13,7 +14,6 @@ export default function TheNoteContext({ children }) {
   });
 
   const setUserDetail = (data) => {
-    console.log("data1", data);
     setState({
       ...state,
       userDetail: data,
@@ -70,7 +70,7 @@ export default function TheNoteContext({ children }) {
         toggleDarkMode: toggleDarkMode,
       }}
     >
-      <div>{children}</div>
+      {children}
     </RootContext.Provider>
   );
 }

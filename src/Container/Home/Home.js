@@ -17,7 +17,8 @@ import AppHeader from "Component/Common/AppHeader";
 import { Link } from "react-router-dom";
 import { RootContext } from "Context/TheNoteContext";
 import { useStyleGenerator } from "theme";
-import { pastDateGenerator } from "Utils/Utils";
+import { dayGreeting, pastDateGenerator } from "Utils/Utils";
+import StoryContainer from "./StoryContainer";
 
 const styles = (theme) => ({
   dnHomeRoot: {
@@ -30,34 +31,6 @@ const styles = (theme) => ({
       lineHeight: "24px",
       "&:first-child": {
         color: theme.palette.primary.main,
-      },
-    },
-  },
-  dnNoteCard: {
-    display: "flex",
-    "& .grey": {
-      color: theme.palette.grey[500],
-    },
-    "&>div": {
-      "&:first-child": {
-        width: 120,
-        textAlign: "center",
-        "&>p": {
-          color: theme.palette.grey[500],
-          fontWeight: "bold",
-        },
-        "&>h5": {
-          fontWeight: "bold",
-        },
-      },
-      "&:nth-child(2)": {
-        background: theme.palette.primary.superLight,
-        width: "100%",
-        borderRadius: theme.shape.borderRadius * 2,
-        padding: theme.spacing(2),
-        "&>p": {
-          fontWeight: "bold",
-        },
       },
     },
   },
@@ -100,23 +73,31 @@ const styles = (theme) => ({
 
 export default function Home() {
   const classes = useStyleGenerator(styles);
-  const { userDetail } = useContext(RootContext);
+  const { userDetail, updateState, count } = useContext(RootContext);
 
   const dateBoxCount = useMemo(
     () => Math.min(20, Math.round(window.innerWidth / 60)),
     [window.innerWidth]
   );
 
+  const [state, setState] = React.useState(0);
+
   return (
     <Container sx={{ pt: 1 }} className={classes.dnHomeRoot}>
+      <button
+        onClick={() => {
+          updateState({
+            count: count || 1 + 1,
+          });
+        }}
+      >
+        {count}
+        Button
+      </button>
+
       <AppHeader>
         <Grid className={classes.dnGreetingMsg}>
-          <Typography variant="h6">Good Morning,</Typography>
-          {
-            // TODO: work for this
-            // <Typography variant="h6">Good Evening,</Typography>
-            // <Typography variant="h6">Good Afternoon,</Typography>
-          }
+          <Typography variant="h6">{dayGreeting()},</Typography>
           <Typography variant="h6">
             {userDetail?.profileObj?.familyName || ""}
           </Typography>
@@ -152,33 +133,7 @@ export default function Home() {
         ))}
       </Grid>
       <Grid>
-        {Array.from(new Array(3)).map((j, i) => (
-          <Grid className={classes.dnNoteCard} mb={2} key={i}>
-            <Grid>
-              <Typography>Dec, 2019</Typography>
-              <Typography variant="h5"> 21</Typography>
-            </Grid>
-            <Grid>
-              <Typography>
-                Your story goes here. and can be use this second line as well.
-                and also may required to use this third like or other lime
-                alos....
-              </Typography>
-              <Stack
-                spacing={2}
-                direction="row"
-                justifyContent="space-between"
-                mt={1}
-              >
-                <Typography className="grey">01:30pm sun</Typography>
-                <Stack spacing={1} direction="row">
-                  <Typography>👍5</Typography>
-                  <Typography>👎1</Typography>
-                </Stack>
-              </Stack>
-            </Grid>
-          </Grid>
-        ))}
+        <StoryContainer />
       </Grid>
       <Zoom in={true} className={classes.dnCreateFabIcon} unmountOnExit>
         <Link to="/create">

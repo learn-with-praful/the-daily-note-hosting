@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from "moment";
 import { createFileFolderInDrive, getDriveFolderId } from "./DriveApi";
 
 let sheetId = "13kAbKDibk4ElrIXIBQnDjD8Kow8pzlVdPmS5DBxNIuQ";
@@ -95,5 +96,88 @@ export const createSpreadSheet = ({ name, parent, fields = "id" }) => {
         resolve(res);
       })
       .catch((error) => reject(error));
+  });
+};
+
+let validRows = (data = {}) => {
+  return Object.values(data).filter((value) => value.value).length;
+};
+
+// TODO: remove this
+export const writeStoryApi = (sheetId, data) => {
+  let params = {
+    spreadsheetId: sheetId,
+    range: "Sheet1",
+    valueInputOption: "USER_ENTERED",
+    insertDataOption: "INSERT_ROWS",
+  };
+
+  let values = [
+    moment(data.date).format("DD/MM/YYYY HH:MM:SS"),
+    data.story,
+    JSON.stringify(data.learning || []),
+    validRows(data?.learning),
+    JSON.stringify(data.mistakes || []),
+    validRows(data?.mistakes),
+    moment(data.date).format("x"),
+  ];
+  console.log("data", data);
+  console.log("values", values);
+
+  const valueRangeBody = {
+    majorDimension: "ROWS", //log each entry as a new row (vs column)
+    values: [values], //convert the object's values to an array
+  };
+
+  let request = window.gapi.client.sheets.spreadsheets.values.append(
+    params,
+    valueRangeBody
+  );
+  request.then(
+    function (response) {
+      // TODO: Insert desired response behaviour on submission
+      console.log(response.result);
+    },
+    function (reason) {
+      console.error("error: " + reason.result.error.message);
+    }
+  );
+};
+
+let storyConverter = (data) => {
+  return data.map((i) => {
+    return {
+      date: i[0],
+      story: i[1],
+      learning: JSON.parse(i[2] || {}),
+      totalLearning: i[3],
+      mistakes: JSON.parse(i[4] || {}),
+      totalMistakes: i[5],
+      dateUnix: parseInt(i[6]),
+    };
+  });
+};
+
+export const getStoryListApi = (sheetId) => {
+  return new Promise((res, rej) => {
+    window.gapi.client.sheets.spreadsheets.values
+      .get({
+        spreadsheetId: sheetId,
+        // range: range,
+
+        // range: "Sheet1!A1:G5",
+        range: "Sheet1!A1:G",
+        majorDimension: "ROWS",
+      })
+      .then((response) => {
+        console.log("response", response);
+        res(storyConverter(response?.result?.values || []));
+        var result = response.result;
+        var numRows = result.values ? result.values.length : 0;
+        console.log(`${numRows} rows retrieved.`);
+      })
+      .catch((error) => {
+        rej(error);
+      });
   });
 };

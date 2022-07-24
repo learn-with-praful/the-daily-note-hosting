@@ -10,15 +10,18 @@ import Sheet from "Component/Sheet";
 import PrafulRedirect from "PrafulRedirect";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
+import "app.css";
+import NotificationManager from "Component/Common/NotificationManager";
+import Test from "Test";
 
 function App() {
-  const data = useContext(RootContext) || {};
-
-  const { appInitialized, sheetInitialized, theme } = data;
+  const { appInitialized, sheetInitialized, theme } =
+    useContext(RootContext) || {};
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <NotificationManager />
 
       <div>
         {
@@ -27,6 +30,8 @@ function App() {
         }
         <HashRouter>
           <Routes>
+            <Route path="/test" element={<Test />} />
+
             <Route path="/login-redirect" element={<PrafulRedirect />} />
 
             <Route path="*" element={<InitializationLoader />} />
@@ -38,6 +43,7 @@ function App() {
               <>
                 <Route path="/" element={<Home />}>
                   <Route path="/home" element={<Home />} />
+                  <Route path="/home/:id" element={<Home />} />
                 </Route>
                 <Route path="/create" element={<CreateNote />} />
                 <Route path="/Header" element={<Header />} />

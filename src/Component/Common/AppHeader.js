@@ -59,12 +59,10 @@ export default function AppHeader(props) {
   const classes = useStyleGenerator(styles);
   const navigator = useNavigate();
 
-  const { userDetail, toggleDarkMode } = useContext(RootContext);
-  const data = useContext(RootContext) || {};
+  const { userDetail, toggleDarkMode, resetState } = useContext(RootContext);
 
   const handleLogout = () => {
     window?.gapi?.auth2?.getAuthInstance()?.signOut();
-    data.resetState();
     navigator("/login");
   };
 
@@ -83,16 +81,12 @@ export default function AppHeader(props) {
           placeholder="bottom-end"
           title={
             <List sx={{ minWidth: 200 }}>
-              <ListItem>
+              <ListItem onClick={handleDarkMode}>
                 <ListItemIcon>
                   <IconGenerator icon={DarkModeIcon} />
                 </ListItemIcon>
                 <ListItemText primary="Dark Mode" />
-                <Switch
-                  edge="end"
-                  onChange={handleDarkMode}
-                  checked={darkMode}
-                />
+                <Switch edge="end" checked={darkMode} />
               </ListItem>
               <ListItem onClick={handleLogout}>
                 <ListItemIcon>
@@ -103,7 +97,11 @@ export default function AppHeader(props) {
             </List>
           }
         >
-          <img src={userDetail?.profileObj?.imageUrl} alt="profile" />
+          <img
+            src={userDetail?.profileObj?.imageUrl}
+            alt="profile"
+            referrerPolicy="no-referrer"
+          />
         </Tooltip>
       </Grid>
     </Grid>

@@ -61,11 +61,11 @@ const theme = {
     MuiTextField: {
       defaultProps: {
         variant: "outlined",
-        noOutline: true,
+        nooutline: true,
       },
       variants: [
         {
-          props: { noOutline: true, variant: "outlined" },
+          props: { nooutline: true, variant: "outlined" },
           style: {
             background: palette.primary.superLight,
             borderRadius: borderRadius,
@@ -85,7 +85,12 @@ const theme = {
         },
       ],
     },
-
+    MuiCircularProgress: {
+      defaultProps: {
+        size: "26px",
+        thickness: 5,
+      },
+    },
     MuiSwitch: {
       styleOverrides: {
         root: {

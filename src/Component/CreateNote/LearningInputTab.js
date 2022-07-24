@@ -14,7 +14,7 @@ const styles = (theme) => ({
   },
 });
 
-export default function LearningInputTab() {
+export default function LearningInputTab({ handleChange }) {
   const classes = useStyleGenerator(styles);
 
   return (
@@ -30,7 +30,7 @@ export default function LearningInputTab() {
           {" Learning..."}
         </Typography>
       </Typography>
-      <MultilineInputs />
+      <MultilineInputs handleChange={handleChange("learning")} />
     </Grid>
   );
 }
