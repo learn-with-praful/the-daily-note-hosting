@@ -1,10 +1,10 @@
 import { AppBar, Avatar, Container, Toolbar, Typography } from "@mui/material";
-import { RootContext } from "Context/TheNoteContext";
-import React, { useContext } from "react";
+import React from "react";
+import useStore from "store";
 import { getUserInfoFromLocalStorage } from "Utils/Utils";
 
 export default function Header() {
-  const { userDetail } = useContext(RootContext);
+  const userDetail = useStore((state) => state.userDetail);
 
   return (
     <AppBar>

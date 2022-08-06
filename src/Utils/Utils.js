@@ -1,7 +1,6 @@
 import moment from "moment";
 
 export const setUserInfoToLocal = (authInstance = {}) => {
-  console.log("authInstance", authInstance);
   window.authInstance = authInstance;
   const basicProfile = authInstance?.getBasicProfile();
   const authResponse = authInstance?.getAuthResponse(true);

@@ -31,10 +31,10 @@ const styles = (theme) => ({
 });
 
 export default function MultilineInputs(props) {
-  const { placeholders = "What you learn today.", handleChange } = props;
+  const { value, placeholders = "What you learn today.", handleChange } = props;
   const classes = useStyleGenerator(styles);
 
-  const [rows, setRows] = useState({ 0: { value: "" } });
+  const [rows, setRows] = useState(value || { 0: { value: "" } });
 
   const handleInputChange = (index) => (e) => {
     setRows((prev) => {

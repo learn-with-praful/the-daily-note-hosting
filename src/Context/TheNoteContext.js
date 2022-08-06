@@ -41,8 +41,6 @@ export default function TheNoteContext({ children }) {
     };
   }, [state, setUserDetail]);
 
-  console.log("Context", state);
-
   const toggleDarkMode = () => {
     let newMode = state.darkMode ? "light" : "dark";
 

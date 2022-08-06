@@ -1,3 +1,4 @@
+import React from "react";
 import {
   Grid,
   List,
@@ -6,16 +7,15 @@ import {
   ListItemText,
   Switch,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import { RootContext } from "Context/TheNoteContext";
-import React, { useContext } from "react";
 import { ReactComponent as LogoutIcon } from "assets/LogoutIcon.svg";
 import { ReactComponent as DarkModeIcon } from "assets/DarkModeIcon.svg";
 import IconGenerator from "./IconGenerator";
 import { useNavigate } from "react-router";
 import { useStorage } from "Utils/Hooks";
 import { useStyleGenerator } from "theme";
+import useStore from "store";
 
 const styles = (theme) => ({
   dnAppHeader: {
@@ -59,7 +59,10 @@ export default function AppHeader(props) {
   const classes = useStyleGenerator(styles);
   const navigator = useNavigate();
 
-  const { userDetail, toggleDarkMode, resetState } = useContext(RootContext);
+  const { userDetail, toggleDarkMode } = useStore((state) => ({
+    userDetail: state.userDetail,
+    toggleDarkMode: state.toggleDarkMode,
+  }));
 
   const handleLogout = () => {
     window?.gapi?.auth2?.getAuthInstance()?.signOut();

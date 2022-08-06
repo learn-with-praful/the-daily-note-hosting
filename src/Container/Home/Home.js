@@ -4,21 +4,20 @@ import {
   Typography,
   TextField,
   InputAdornment,
-  Stack,
   Zoom,
   Fab,
 } from "@mui/material";
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import { ReactComponent as SearchIcon } from "assets/SearchIcon.svg";
 import { ReactComponent as PlusIcon } from "assets/PlusIcon.svg";
 import { IconGenerator } from "Component/Common";
-import clsx from "clsx";
 import AppHeader from "Component/Common/AppHeader";
-import { Link } from "react-router-dom";
-import { RootContext } from "Context/TheNoteContext";
+import { Link, useNavigate } from "react-router-dom";
 import { useStyleGenerator } from "theme";
 import { dayGreeting, pastDateGenerator } from "Utils/Utils";
 import StoryContainer from "./StoryContainer";
+import useStore from "store";
+import useKeyboardShortcut from "use-keyboard-shortcut";
 
 const styles = (theme) => ({
   dnHomeRoot: {
@@ -69,32 +68,36 @@ const styles = (theme) => ({
     bottom: theme.spacing(3),
     right: theme.spacing(3),
   },
+  dnStoryContainer: {
+    height: "calc(100vh - 108px)",
+    overflowY: "auto",
+  },
 });
 
 export default function Home() {
   const classes = useStyleGenerator(styles);
-  const { userDetail, updateState, count } = useContext(RootContext);
+  const navigator = useNavigate();
+  const userDetail = useStore((state) => state.userDetail);
 
-  const dateBoxCount = useMemo(
-    () => Math.min(20, Math.round(window.innerWidth / 60)),
-    [window.innerWidth]
+  // const dateBoxCount = useMemo(
+  //   () => Math.min(20, Math.round(window.innerWidth / 60)),
+  //   [window.innerWidth]
+  // );
+
+  useKeyboardShortcut(
+    ["Shift", "C"],
+    () => {
+      navigator("/create");
+    },
+    {
+      overrideSystem: true,
+      ignoreInputFields: false,
+      repeatOnHold: false,
+    }
   );
-
-  const [state, setState] = React.useState(0);
 
   return (
     <Container sx={{ pt: 1 }} className={classes.dnHomeRoot}>
-      <button
-        onClick={() => {
-          updateState({
-            count: count || 1 + 1,
-          });
-        }}
-      >
-        {count}
-        Button
-      </button>
-
       <AppHeader>
         <Grid className={classes.dnGreetingMsg}>
           <Typography variant="h6">{dayGreeting()},</Typography>
@@ -118,21 +121,24 @@ export default function Home() {
           }}
         />
       </Grid>
-      <Grid className={classes.dnDateContainer}>
-        {pastDateGenerator(dateBoxCount).map((j, i) => (
-          <Grid
-            className={clsx(classes.dnDateBox, {
-              ["selected"]: dateBoxCount - 2 === i,
-            })}
-            key={i}
-          >
-            <Typography>{j.date()}</Typography>
-            <Typography variant="body2">{j.format("ddd")}</Typography>
-            <div></div>
-          </Grid>
-        ))}
-      </Grid>
-      <Grid>
+      {
+        // TODO: work on this
+        //   <Grid className={classes.dnDateContainer}>
+        //   {pastDateGenerator(dateBoxCount).map((j, i) => (
+        //     <Grid
+        //       className={clsx(classes.dnDateBox, {
+        //         ["selected"]: dateBoxCount - 2 === i,
+        //       })}
+        //       key={i}
+        //     >
+        //       <Typography>{j.date()}</Typography>
+        //       <Typography variant="body2">{j.format("ddd")}</Typography>
+        //       <div></div>
+        //     </Grid>
+        //   ))}
+        // </Grid>
+      }
+      <Grid className={classes.dnStoryContainer}>
         <StoryContainer />
       </Grid>
       <Zoom in={true} className={classes.dnCreateFabIcon} unmountOnExit>

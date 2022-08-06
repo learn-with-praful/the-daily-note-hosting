@@ -2,18 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import App from "App";
-import TheNoteContext from "Context/TheNoteContext";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
-// import PlayGround from "PlayGround";
-// import PlayGroundHook from "PlayGroundHoook";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
-root.render(
-  <TheNoteContext>
-    <App />
-  </TheNoteContext>
-);
+root.render(<App />);
 
 serviceWorkerRegistration.register();
 

@@ -1,32 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Alert, Slide, Snackbar } from "@mui/material";
-import TheNoteContext, { RootContext } from "Context/TheNoteContext";
-import { useContextSelector, useContextSelector1 } from "Utils/Hooks";
 import { generateDynamicKey } from "Utils/Utils";
+import useStore from "store";
 
 function NotificationManager() {
-  // const selector = useContextSelector(RootContext);
-  const notification = useContextSelector1(
-    RootContext,
-    (state) => state.notification
-  );
-
-  // const notification = [
-  //   {
-  //     id: generateDynamicKey(),
-  //     open: true,
-  //     message: "test",
-  //     type: "success",
-  //   },
-  // ];
-  console.log("notification", notification);
-
-  // const notification = selector((state) => state.notification);
-  // const updateState = selector((state) => state.updateState);
-  const updateState = () => {};
+  const updateState = useStore((state) => state.updateState);
+  const notification = useStore((state) => state.notification || []);
 
   const handleCloseAlert = (id) => (e) => {
-    console.log("id", id);
     let data = notification.map((item) => {
       if (item.id === id && !item.open) {
         item.open = false;
@@ -59,19 +40,8 @@ function NotificationManager() {
 
 export default NotificationManager;
 
-{
-  // export default React.memo(NotificationManager);
-}
-
 export const useNotification = () => {
-  const updateState = useContextSelector1(RootContext, (state) => {
-    console.log("praful", state);
-    console.log("prafulqwe", state.updateState);
-    let fun = state.updateState
-
-    return fun;
-  });
-  console.log("!23", updateState);
+  const updateState = useStore((state) => state.updateState);
 
   const generateNotification = (type, other = {}) => {
     let payload = {};
@@ -81,7 +51,6 @@ export const useNotification = () => {
       payload = other;
     }
     if (payload.message) {
-      console.log("updateState", updateState);
       updateState((state) => ({
         ...state,
         notification: [

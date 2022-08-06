@@ -60,7 +60,6 @@ export default function Login() {
         navigate("/home");
       })
       .catch((error) => {
-        console.log("Error", error);
         if (error.error === "popup_closed_by_user") {
           console.log("Popup close.");
         }

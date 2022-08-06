@@ -77,6 +77,10 @@ export default function StoryCardOpen({ id, row }) {
     navigate(`/home`, { replace: true });
   }, [navigate]);
 
+  const handleEdit = () => {
+    navigate(`/edit/${row.id}`);
+  };
+
   return (
     <
       // layoutId={`card-container-${id}`}
@@ -150,7 +154,7 @@ export default function StoryCardOpen({ id, row }) {
           }}
           className={classes.dnActionButtonContainer}
         >
-          <Button fullWidth size="large">
+          <Button fullWidth size="large" onClick={handleEdit}>
             Edit
           </Button>
           <Button

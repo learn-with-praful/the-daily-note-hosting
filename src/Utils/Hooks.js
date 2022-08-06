@@ -32,7 +32,7 @@ export const useSheetApi = (props) => {
     return apiParams;
   };
 
-  let parseRecords = (records) => {
+  let parseRecords = (records, startKeyIndex = 1) => {
     let finalData = [];
     records.map((record, mainIndex) => {
       Object.keys(columns || {}).map((key, index) => {
@@ -40,6 +40,7 @@ export const useSheetApi = (props) => {
           finalData[mainIndex] = {};
         }
         finalData[mainIndex][key] = record[index];
+        finalData[mainIndex]["id"] = startKeyIndex + mainIndex;
       });
     });
     return finalData;
@@ -71,14 +72,45 @@ export const useSheetApi = (props) => {
     });
   };
 
+  const updateRecordApi = (id, params) => {
+    return new Promise((res, rej) => {
+      let apiParams = convertParams(params);
+      window.gapi.client.sheets.spreadsheets.values
+        .update(
+          {
+            spreadsheetId: sheetId,
+            range: `Sheet1!${id}:${id}`,
+            valueInputOption: "USER_ENTERED",
+          },
+          {
+            majorDimension: "ROWS",
+            values: [apiParams],
+          }
+        )
+        .then((response) => {
+          res(response);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  };
+
   const getListingAPI = (props) => {
-    const { offset = 0, limit = 16 } = props || {};
+    const { offset = 0, limit = 16, id } = props || {};
+
+    let range = "";
+    if (id) {
+      range = `${sheetName}!${id}:${id}`;
+    } else {
+      range = `${sheetName}!${offset || 1}:${offset + limit}`;
+    }
 
     return new Promise((res, rej) => {
       window.gapi.client.sheets.spreadsheets.values
         .get({
           spreadsheetId: sheetId,
-          range: `${sheetName}!${offset || 1}:${offset + limit}`,
+          range: range,
           majorDimension: "ROWS",
         })
         .then((response) => {
@@ -92,12 +124,11 @@ export const useSheetApi = (props) => {
     });
   };
 
-  const getByIdAPI = (offset) => {
-    new Promise((res, rej) => {
-      getListingAPI({ offset: offset, limit: 1 })
+  const getByIdAPI = (id) => {
+    return new Promise((res, rej) => {
+      getListingAPI({ id })
         .then((response) => {
-          let finalData = parseRecords(response?.result?.values || []);
-          res(finalData[0]);
+          res(response[0]);
         })
         .catch((error) => {
           rej(error);
@@ -105,7 +136,7 @@ export const useSheetApi = (props) => {
     });
   };
 
-  return { getListingAPI, getByIdAPI, addRecordAPI };
+  return { getListingAPI, getByIdAPI, addRecordAPI, updateRecordApi };
 };
 
 export const useApiCall = (apiCallback, other = { resetAfterDone: true }) => {
@@ -168,8 +199,6 @@ export const useContextSelector1 = (context, callback) => {
 //   const contextState = useContext(context);
 
 //   const state = useMemo(() => {
-//     console.log("exected");
-
 //     callback(contextState);
 //   }, [callback(contextState)]);
 

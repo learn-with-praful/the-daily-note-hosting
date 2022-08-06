@@ -1,22 +1,21 @@
-import React, { useContext, useEffect } from "react";
-import { RootContext } from "Context/TheNoteContext";
+import React from "react";
 import Header from "Component/Header";
 import Login from "Container/Login/Login";
 import Home from "Container/Home/Home";
 import CreateNote from "Container/CreateNote/CreateNote";
-import { HashRouter, BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import InitializationLoader from "Container/InitializationLoader";
 import Sheet from "Component/Sheet";
-import PrafulRedirect from "PrafulRedirect";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import "app.css";
 import NotificationManager from "Component/Common/NotificationManager";
-import Test from "Test";
+import useStore from "store";
 
 function App() {
-  const { appInitialized, sheetInitialized, theme } =
-    useContext(RootContext) || {};
+  const appInitialized = useStore((state) => state.appInitialized);
+  const sheetInitialized = useStore((state) => state.sheetInitialized);
+  const theme = useStore((state) => state.theme);
 
   return (
     <ThemeProvider theme={theme}>
@@ -24,16 +23,8 @@ function App() {
       <NotificationManager />
 
       <div>
-        {
-          // <Header />
-          // <Sheet />
-        }
         <HashRouter>
           <Routes>
-            <Route path="/test" element={<Test />} />
-
-            <Route path="/login-redirect" element={<PrafulRedirect />} />
-
             <Route path="*" element={<InitializationLoader />} />
             {appInitialized && (
               <Route exact path="/login" element={<Login />} />
@@ -45,6 +36,8 @@ function App() {
                   <Route path="/home" element={<Home />} />
                   <Route path="/home/:id" element={<Home />} />
                 </Route>
+                <Route path="/edit/:id" element={<CreateNote />} />
+
                 <Route path="/create" element={<CreateNote />} />
                 <Route path="/Header" element={<Header />} />
                 <Route path="/Sheet" element={<Sheet />} />

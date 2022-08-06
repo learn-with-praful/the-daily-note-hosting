@@ -69,7 +69,7 @@ export default function StoryCard(props) {
       </motion.div>
       <Grid
         onClick={() => {
-          handleView(row.time_stamp);
+          handleView(row.id);
         }}
       >
         <motion.p

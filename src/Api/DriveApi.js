@@ -41,7 +41,6 @@ export const createFolderApi = (folderName, parentId) => {
 };
 
 export const getDriveFolderId = async (name = "TheNote", parentId) => {
-  console.log("Hello");
   let res = await window.gapi.client.drive.files.list({
     // name: "TheDate",
     // // q: "application/vnd.google-apps.folder",

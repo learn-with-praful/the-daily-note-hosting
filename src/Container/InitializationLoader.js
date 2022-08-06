@@ -1,14 +1,13 @@
+import React, { useEffect } from "react";
 import { getDriveFolderId } from "Api/DriveApi";
 import { initializeBaseConnection } from "Api/General";
 import { createSheet } from "Api/SheetApi";
-import { RootContext } from "Context/TheNoteContext";
-import React, { useContext, useEffect } from "react";
+import useStore from "store";
 
 export default function InitializationLoader() {
-  const { updateState, appInitialized } = useContext(RootContext) || {};
+  const updateState = useStore((state) => state.updateState);
 
   useEffect(() => {
-    console.log("appInitialized", appInitialized);
     initializeBaseConnection()
       .then((res) => {
         updateState({

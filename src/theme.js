@@ -1,7 +1,6 @@
-import { useContext } from "react";
 import { createTheme } from "@mui/material";
-import { RootContext } from "Context/TheNoteContext";
 import { makeStyles } from "@mui/styles";
+import useStore from "store";
 
 let palette = {
   primary: {
@@ -12,7 +11,7 @@ let palette = {
     main: "#ff0000",
   },
   primaryLight: {
-    main: "#DE496E18",
+    main: "#ffd1dc",
   },
   black: {
     main: "#000",
@@ -215,29 +214,14 @@ const theme = {
 
 export default theme;
 
-export const generateTheme = (mode = "dark") => {
+export const generateTheme = (mode = "light") => {
   if (mode) {
     theme.palette.mode = mode === "dark" ? "dark" : "light";
   }
   return createTheme(theme);
 };
 
-// export const useTheme = () => {
-//   const globalContext = useContext(RootContext);
-
-//   const newTheme = React.useMemo(() => {
-//     theme.palette.mode = globalContext.darkMode ? "dark" : "light";
-//     console.log("setting");
-//     globalContext.updateState({ theme: theme });
-//     return createTheme(theme);
-//   }, [globalContext.darkMode]);
-
-//   // let themeObj = createTheme(theme);
-//   return newTheme;
-// };
-
 export const useStyleGenerator = (styleObj, styleParams = {}) => {
-  const { theme } = useContext(RootContext);
+  const theme = useStore((state) => state.theme);
   return makeStyles(() => styleObj(theme))(styleParams);
-  // return useMemo(() => makeStyles(() => styleObj(theme))(styleParams), [theme]);
 };

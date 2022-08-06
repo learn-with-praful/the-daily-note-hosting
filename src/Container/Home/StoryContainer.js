@@ -1,7 +1,6 @@
-import { RootContext } from "Context/TheNoteContext";
 import { motion, AnimateSharedLayout } from "framer-motion";
 import { theNoteTable } from "model/Sheet.model";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useApiCall, useSheetApi } from "Utils/Hooks";
 import StoryCard from "./StoryCard";
@@ -9,6 +8,8 @@ import StoryCardOpen from "./StoryCardOpen";
 import NotDataFound from "assets/NotDataFound.png";
 import { useStyleGenerator } from "theme";
 import { Button, Typography } from "@mui/material";
+import useStore from "store";
+import useKeyboardShortcut from "use-keyboard-shortcut";
 
 const styles = (theme) => ({
   dnNoDataFound: {
@@ -32,7 +33,10 @@ export default function StoryContainer() {
   const navigate = useNavigate();
   const classes = useStyleGenerator(styles);
 
-  const { sheetId, updateState, storyList = [] } = useContext(RootContext);
+  const sheetId = useStore((state) => state.sheetId);
+  const updateState = useStore((state) => state.updateState);
+  const storyList = useStore((state) => state.storyList || []);
+
   const { getListingAPI, getByIdAPI } = useSheetApi({
     sheetId: sheetId,
     columns: theNoteTable,
@@ -64,8 +68,20 @@ export default function StoryContainer() {
   }, [data]);
 
   let selectedStory = useMemo(() => {
-    return storyList.filter((i) => i.time_stamp === id)[0];
+    return storyList.filter((i) => i.id === parseInt(id))[0];
   }, [id, storyList]);
+
+  useKeyboardShortcut(
+    ["Escape"],
+    () => {
+      navigate(`/home`, { replace: true });
+    },
+    {
+      overrideSystem: false,
+      ignoreInputFields: true,
+      repeatOnHold: false,
+    }
+  );
 
   return loading ? (
     "loading"

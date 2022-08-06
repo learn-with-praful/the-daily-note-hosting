@@ -3,7 +3,6 @@ import { setUserInfoToLocal } from "Utils/Utils";
 export const initializeBaseConnection = () => {
   return new Promise((res, rej) => {
     let gapi = window?.gapi;
-    console.log("initialization...");
     gapi.load("client", (data) => {
       gapi.client
         .init({
@@ -30,7 +29,6 @@ export const initializeBaseConnection = () => {
           ],
         })
         .then(() => {
-          console.log("successinit");
           let authInstance = gapi?.auth2?.getAuthInstance();
 
           if (authInstance?.isSignedIn?.get()) {
@@ -42,8 +40,6 @@ export const initializeBaseConnection = () => {
           }
         })
         .catch((error) => {
-          console.log("match here");
-          console.log("Init error", error);
           rej({
             error: "something_went_wrong",
             message: "Something went wrong.",
